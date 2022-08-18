@@ -1,1 +1,0 @@
-This is a skeletal code for generating various image property metrics and then deriving its influence on the CV algorithms
