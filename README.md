@@ -8,7 +8,7 @@ Steps to run:
 1. Images and ground truth must be stored in Image and GT folder respectively. 
 2. Then cropy.py should be executed to resize the images into 416x416.
 3. IQA (Image quality assessment metrics) are generated using IQA_metrics.py.
-4. Bounding boxes for th Ground truth image are generated using GT_boundingbox.py.
+4. Bounding boxes for the Ground truth image are generated using GT_boundingbox.py.
 5. Then the cars are classified using Deepstack via file deepstack_detect.py.
 6. GT_boundingbox.py and deepstack_detect.py generate csv files that are necessary for NN classification.
 7. Finally, a four layer nueral network (nn_classification.py) is used to obtain a relationship between the IQAs and deepstack results.
