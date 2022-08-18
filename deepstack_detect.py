@@ -22,7 +22,7 @@ img_files = listdir('Images_Resized')
 Deepstack_results = pd.DataFrame(columns = ['File Name','Confidence', 'IoU', 'Composite'])
 
 
-for file in img_files:
+for file in img_files: # Cycling through the image files
 	split_name = file.split('.')
 	f_name = split_name[0]
 	
@@ -39,7 +39,7 @@ for file in img_files:
 	for object in response["predictions"]:
 		con_value = 0 # Resetting the confidence value every iteration
 		
-		if object['label'] == 'car' and car_no != 0:
+		if object['label'] == 'car' and car_no != 0: # if the detected object is a car.
 			startX = object["x_min"]
 			endX = object["x_max"]
 			startY = object["y_min"]
@@ -52,14 +52,14 @@ for file in img_files:
 			con_value = conf
 			
 			image = cv2.imread("Images_resized/" + file, cv2.IMREAD_COLOR)
-			cv2.rectangle(image, (startX, startY), (endX, endY), (255,255,255), 2)
+			cv2.rectangle(image, (startX, startY), (endX, endY), (255,255,255), 2) # Drawing bounding boxes
 			image = cv2.putText(image, 'Confidence : '+ str(conf), (x-5,y-5), cv2.FONT_HERSHEY_SIMPLEX, 0.25, (255, 255, 255), 1, cv2.LINE_AA)
-			cv2.imwrite("Images_boxed/" + f_name + "_box" + ".jpg", image)
+			cv2.imwrite("Images_boxed/" + f_name + "_box" + ".jpg", image) # Saving detected images in different folder for analysis.
 			
 			a = [x,y,x+w,y+h]
 			b = [gt_x,gt_y,gt_x+gt_w,gt_y+gt_h]
-			IoU= compute_IoU(a,b)
-			composite = (con_value+IoU)/2
+			IoU= compute_IoU(a,b) # Computing IoUs.
+			composite = (con_value+IoU)/2 # Composite value is weighted sum of IoU and confidence.
 			
 		elif car_no == 0: # If a car is not detected
 			x = 0  # X of top left
@@ -97,4 +97,4 @@ for file in img_files:
 	composite = (con_value+IoU)/2
 	Deepstack_results.loc[i] = [f_name] + list([con_value, IoU, composite, x, y, w, h])
 	
-Deepstack_results.to_csv('Deepstack_Results.csv',index=False)
+Deepstack_results.to_csv('Deepstack_Results.csv',index=False) # Saving results into csv
